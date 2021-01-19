@@ -1,0 +1,61 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateAdminTables extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('admin_users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->comment('登录名');
+            $table->string('user_name')->comment('昵称')->nullable();
+            $table->string('password', 191);
+            $table->boolean('status')->default(0)->comment('是否禁用,1:是,0否');
+            $table->string('avatar')->comment('头像地址')->nullable();
+            $table->string('token')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('name', 'name_index');
+            $table->index('status', 'status_index');
+            $table->index('user_name', 'user_name_index');
+        });
+
+        Schema::create('menus', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('_lft');
+            $table->integer('_rgt');
+            $table->integer('parent_id')->nullable();
+            $table->integer('order')->default(1)->comment('排序');
+            $table->string('name')->comment('名称');
+            $table->boolean('is_hide')->default(0)->comment('是否隐藏:1:隐藏,0:不隐藏');
+            $table->string('icon')->comment('图标')->nullable();
+            $table->string('path')->comment('路径');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('order', 'order_index');
+            $table->index('is_hide', 'is_hide_index');
+            $table->index(['_lft', '_rgt', 'parent_id'], '_lft_rgt_parent_id_index');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('admin_uses');
+        Schema::drop('menus');
+    }
+}

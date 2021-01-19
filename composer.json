@@ -1,0 +1,27 @@
+{
+    "name": "sheaxiang/laravel-admin",
+    "description": "laravel admin",
+    "type": "library",
+    "keywords": ["laravel", "admin", "react", "antd"],
+    "license": "MIT",
+    "require": {
+        "sheaxiang/laravel-function-helper": "^1.3",
+        "tymon/jwt-auth": "^1.0",
+        "kalnoy/nestedset": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SheaXiang\\Admin\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SheaXiang\\Admin\\AdminServiceProvider"
+            ]
+        }
+    }
+}
