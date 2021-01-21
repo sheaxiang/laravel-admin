@@ -1,4 +1,6 @@
-﻿export default [
+﻿import otherRouters from './otherRoutes'
+
+export default [
   {
     path: '/',
     component: './Layout/index',
@@ -38,27 +40,11 @@
           },
         ],
       },
-
-      {
-        path: '/admin',
-        component: './Admin',
-        exact: true,
-        routes: [
-          {
-            path: '/admin/sub-page',
-            component: './Dashboard',
-          },
-        ],
-      },
-      {
-        path: '/tableList',
-        component: './TableList',
-      },
       {
         path: '/',
         redirect: '/dashboard',
       },
-
+      ...otherRouters
       /*{
         component: './404',
       },*/
