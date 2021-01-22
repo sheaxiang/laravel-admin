@@ -8,7 +8,7 @@ use SheaXiang\Admin\Repositories\MenuRepository;
 
 class MenuController extends  BaseController
 {
-    public function index(Request $request, MenuRepository $menuRepository)
+    public function index(MenuRepository $menuRepository)
     {
         return succeed($menuRepository->index());
     }

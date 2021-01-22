@@ -53,29 +53,20 @@ export async function getInitialState(): Promise<{
     return defaultMenuData.concat(formatMenus);
   }
 
-  let info = {};
+  let currentUser: API.CurrentUser = {};
+  let menuData: array | undefined = [];
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
-    const currentUser = await fetchUserInfo();
-    const menuData = currentUser?.menus;
-
-    info = {
-      currentUser,
-      menuData
-    }
-  }
-
-  const getAvatar = () => {
-    return defaultSettings.host + info?.currentUser?.avatar;
+    currentUser = await fetchUserInfo();
+    menuData = currentUser?.menus;
   }
 
   return {
     fetchUserInfo,
     formatMenu,
-    getAvatar,
-    menuData: [],
-    settings: defaultSettings,
-    ...info
+    menuData,
+    currentUser,
+    settings: defaultSettings
   };
 }
 

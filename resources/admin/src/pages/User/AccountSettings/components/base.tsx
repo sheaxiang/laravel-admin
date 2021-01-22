@@ -9,12 +9,12 @@ import { image } from '@/services/upload'
 const BaseView: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
-  const { currentUser } = initialState
+  const { currentUser, settings } = initialState
 
   const getAvatarURL = () => {
     if (currentUser) {
       if (currentUser.avatar) {
-         return initialState.getAvatar();
+         return settings.host + currentUser.avatar;
       }
       return 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
     }

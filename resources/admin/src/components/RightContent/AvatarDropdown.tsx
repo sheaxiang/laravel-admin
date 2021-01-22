@@ -6,6 +6,7 @@ import { outLogin } from '@/services/login';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import defaultSettings from "../../../config/defaultSettings";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -69,7 +70,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return loading;
   }
 
-  const { currentUser } = initialState;
+  const { currentUser, settings } = initialState;
 
   if (!currentUser || !currentUser.user_name) {
     return loading;
@@ -100,7 +101,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar size="small" className={styles.avatar} src={initialState.getAvatar()} alt="avatar" />
+        <Avatar size="small" className={styles.avatar} src={settings.host + currentUser?.avatar} alt="avatar" />
         <span className={`${styles.name} anticon`}>{currentUser.user_name}</span>
       </span>
     </HeaderDropdown>

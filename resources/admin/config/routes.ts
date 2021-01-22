@@ -31,6 +31,7 @@ export default [
       },
       {
         path: '/setting',
+        component: './Setting/menu',
         routes: [
           {
             path: 'menu',

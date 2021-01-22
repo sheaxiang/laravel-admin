@@ -1,19 +1,26 @@
 <?php
 namespace SheaXiang\Admin\Repositories;
 
-use Illuminate\Http\Request;
 use SheaXiang\Admin\Models\Menu;
 
 class MenuRepository
 {
     public function index()
     {
-        $query = Menu::orderByDesc('order')->get();
+        $query = Menu::orderByDesc('order');
 
         if ($isHide = request('is_hide')) {
             $query->where('is_hide', $isHide);
         }
 
-        return $query->toTree();
+        if ($name = request('name')) {
+            $query->where('name', 'like', "%$name%");
+        }
+
+        if ($path = request('path')) {
+            $query->where('path', 'like', "%$path%");
+        }
+
+        return $query->get()->toTree();
     }
 }

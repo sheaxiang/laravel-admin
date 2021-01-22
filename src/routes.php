@@ -21,6 +21,8 @@ Route::group([
                 $query->post('/editorImage/{type}', 'UploadController@editorImage');
                 $query->post('/sliceEditor', 'UploadController@sliceEditor');
             });
+
+            $authApi->resource('admin_user', 'AdminUserController');
         });
     });
 });
