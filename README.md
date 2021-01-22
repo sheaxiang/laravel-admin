@@ -31,3 +31,8 @@ providers
     'model' => SheaXiang\Admin\Models\AdminUser::class,
 ],
 ```
+## UPDATE
+
+``` 
+php artisan vendor:publish --tag=laravel-admin-resources-force --force
+```
