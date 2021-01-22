@@ -1,5 +1,4 @@
-﻿import otherRouters from './otherRoutes'
-
+import otherRouters from './otherRoutes';
 export default [
   {
     path: '/',
@@ -10,17 +9,17 @@ export default [
     routes: [
       {
         path: '/user',
-        layout: false,
         routes: [
           {
-            path: '/user',
-            routes: [
-              {
-                name: '登录',
-                path: '/user/login',
-                component: './User/login',
-              },
-            ],
+            layout: false,
+            name: '登录',
+            path: 'login',
+            component: './User/login',
+          },
+          {
+            name: '个人设置',
+            path: 'settings',
+            component: './User/AccountSettings',
           },
         ],
       },
@@ -30,7 +29,6 @@ export default [
         icon: 'smile',
         component: './Dashboard',
       },
-
       {
         path: '/setting',
         routes: [
@@ -44,10 +42,10 @@ export default [
         path: '/',
         redirect: '/dashboard',
       },
-      ...otherRouters
-      /*{
+      ...otherRouters,
+      {
         component: './404',
-      },*/
+      },
     ],
   },
 ];

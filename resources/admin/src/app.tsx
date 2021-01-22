@@ -53,24 +53,29 @@ export async function getInitialState(): Promise<{
     return defaultMenuData.concat(formatMenus);
   }
 
+  let info = {};
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     const currentUser = await fetchUserInfo();
     const menuData = currentUser?.menus;
 
-    return {
-      fetchUserInfo,
-      formatMenu,
+    info = {
       currentUser,
-      menuData,
-      settings: defaultSettings,
-    };
+      menuData
+    }
   }
+
+  const getAvatar = () => {
+    return defaultSettings.host + info?.currentUser?.avatar;
+  }
+
   return {
     fetchUserInfo,
     formatMenu,
+    getAvatar,
     menuData: [],
-    settings: defaultSettings
+    settings: defaultSettings,
+    ...info
   };
 }
 
@@ -188,15 +193,23 @@ const loadRequestInterceptor = () => {
   requestCount += 1;
 };
 
+function isFormData(val) {
+  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+}
+
 const authHeaderInterceptor = (  url: string, options: RequestOptionsInit ) => {
   const authHeader = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': `Bearer ${localStorage.getItem("admin_token") || ''}`
   }
+  // https://github.com/umijs/umi-request/pull/118 如何是上传文件 则检测是否是formData,并删除content-type,让浏览器自己加
+  if (isFormData(options.data)) {
+    delete authHeader['Content-Type'];
+  }
   return {
     url: `${url}`,
-    options: { ...options , interceptors: true, headers: authHeader},
+    options: { ...options , interceptors: true, headers: {...authHeader, ...options.headers}},
   };
 }
 

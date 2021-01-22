@@ -16,7 +16,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
-
+  host: 'http://reactadmin.test',
   menu: {
     locale: false
   }

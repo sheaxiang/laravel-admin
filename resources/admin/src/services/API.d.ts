@@ -2,7 +2,8 @@ declare namespace API {
   export type CurrentUser = {
     avatar?: string;
     name?: string;
-    is_prohibit?: string;
+    user_name?: string;
+    status?: string;
     token?: string;
     id?: number;
     access?: 'user' | 'guest' | 'admin';

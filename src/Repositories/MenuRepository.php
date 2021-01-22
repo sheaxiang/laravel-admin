@@ -1,6 +1,4 @@
 <?php
-
-
 namespace SheaXiang\Admin\Repositories;
 
 use Illuminate\Http\Request;

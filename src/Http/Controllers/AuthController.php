@@ -4,6 +4,8 @@ namespace SheaXiang\Admin\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
 use SheaXiang\Admin\Http\Requests\AuthLogin;
+use SheaXiang\Admin\Http\Requests\UpdateAdminUserMy;
+use SheaXiang\Admin\Http\Requests\UpdateAdminUserMyPassword;
 use SheaXiang\Admin\Models\AdminUser;
 use SheaXiang\Admin\Repositories\MenuRepository;
 
@@ -33,21 +35,27 @@ class AuthController extends  BaseController
         return respondWithToken($token, 'admin');
     }
 
-    public function update(StoreUpdateAdminUserMy $request)
+    public function update(UpdateAdminUserMy $request)
     {
         $info = auth('admin')->user();
 
-        if ($name = $request->name) {
-            $info->name = $name;
+        $info->update($request->all());
+
+        return succeed('操作成功');
+    }
+
+    public function updatePassword(UpdateAdminUserMyPassword $request)
+    {
+        $info = auth('admin')->user();
+
+        if (!Hash::check($request->old_password,$info->password)) {
+            return failed('原密码错误');
         }
 
-        if ($password = $request->password) {
-            $info->password = bcrypt($password);
-        }
-
+        $info->password = bcrypt($request->password);
         $info->save();
 
-        return dingoSucceed('操作成功');
+        return succeed('修改密码成功');
     }
 
     /**
@@ -89,6 +97,6 @@ class AuthController extends  BaseController
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('admin')->refresh());
+        return respondWithToken(auth('admin')->refresh());
     }
 }

@@ -10,7 +10,7 @@ class MenuController extends  BaseController
 {
     public function index(Request $request, MenuRepository $menuRepository)
     {
-        return succeed($menuRepository->index($request));
+        return succeed($menuRepository->index());
     }
 
     public function store(Request $request)
