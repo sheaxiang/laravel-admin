@@ -79,6 +79,7 @@ class AdminServiceProvider extends ServiceProvider
             __DIR__.'/../resources/admin/dist' => base_path('backend/dist'),
             __DIR__.'/../resources/admin/public' => base_path('backend/public'),
             __DIR__.'/../resources/admin/src' => base_path('backend/src'),
+            __DIR__.'/../resources/admin/dist' => public_path('backend'),
         ]);
 
         //发布前端打包好的代码到backend目录
