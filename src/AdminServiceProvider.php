@@ -4,13 +4,35 @@ namespace SheaXiang\Admin;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use SheaXiang\Admin\Commands\InstallCommand;
 use SheaXiang\Admin\Exceptions\Handler;
+use SheaXiang\Admin\Http\Middleware\Permission;
 
 class AdminServiceProvider extends ServiceProvider
 {
+    /**
+     * The application's route middleware.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [
+        'admin.permission' => Permission::class,
+    ];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [
+        'admin' => [
+            'admin.permission',
+        ],
+    ];
+
     public function boot(Filesystem $filesystem)
     {
         // 加载路由
@@ -25,23 +47,11 @@ class AdminServiceProvider extends ServiceProvider
                     Handler::class
         );
 
-        //todo 这样写没用设置auth config
-        /*$authGuards = array_merge(config('auth.guards'), [
-            'admin' => [
-                'driver' => 'jwt',
-                'provider' => 'admin',
-            ],
-        ]);
-        config(['guards' => $authGuards]);
+    }
 
-        $authProviders = array_merge(config('auth.providers'), [
-            'admin' => [
-                'driver' => 'eloquent',
-                'model' => AdminUser::class,
-            ],
-        ]);
-        config(['providers' => $authProviders]);*/
-
+    protected function loadAdminAuthConfig()
+    {
+        config(Arr::dot(config('admin.auth', []), 'auth.'));
     }
 
     public function register()
@@ -54,6 +64,10 @@ class AdminServiceProvider extends ServiceProvider
         $this->commands([
             InstallCommand::class
         ]);
+
+        $this->loadAdminAuthConfig();
+
+        $this->registerRouteMiddleware();
     }
 
     public function pushFiles($filesystem)
@@ -98,5 +112,18 @@ class AdminServiceProvider extends ServiceProvider
                 return $filesystem->glob($path.'*_create_admin_tables.php');
             })->push($this->app->databasePath()."/migrations/{$timestamp}_create_admin_tables.php")
             ->first();
+    }
+
+    protected function registerRouteMiddleware()
+    {
+        // register route middleware.
+        foreach ($this->routeMiddleware as $key => $middleware) {
+            app('router')->aliasMiddleware($key, $middleware);
+        }
+
+        // register middleware group.
+        foreach ($this->middlewareGroups as $key => $middleware) {
+            app('router')->middlewareGroup($key, $middleware);
+        }
     }
 }

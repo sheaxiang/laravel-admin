@@ -15,12 +15,17 @@ class Menu extends Model
 		'parent_id',
 		'name',
 		'order',
-		'hidden',
+		'is_hide',
 		'icon',
 		'path',
 	];
 
-	protected $casts = [
-		'hidden' => 'boolean'
-	];
+    protected $appends = [
+        'hideInMenu'
+    ];
+
+    public function getHideInMenuAttribute()
+    {
+        return (boolean) $this->is_hide;
+    }
 }

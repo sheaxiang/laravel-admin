@@ -31,11 +31,31 @@ export default [
       },
       {
         path: '/setting',
-        component: './Setting/menu',
         routes: [
           {
             path: 'menu',
             component: './Setting/menu',
+            access: 'can'
+          },
+        ],
+      },
+      {
+        path: '/auth',
+        routes: [
+          {
+            path: 'adminUser',
+            component: './Auth/AdminUser',
+            access: 'can'
+          },
+          {
+            path: 'permission',
+            component: './Auth/Permission',
+            access: 'can'
+          },
+          {
+            path: 'role',
+            component: './Auth/Role',
+            access: 'can'
           },
         ],
       },
@@ -43,7 +63,19 @@ export default [
         path: '/',
         redirect: '/dashboard',
       },
+      {
+        path: '/setting',
+        redirect: '/setting/menu',
+      },
+      {
+        path: '/auth',
+        redirect: '/auth/adminUser',
+      },
       ...otherRouters,
+      {
+        path: '/403',
+        component: './403',
+      },
       {
         component: './404',
       },

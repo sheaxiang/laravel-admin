@@ -1,15 +1,12 @@
-import {PlusOutlined} from '@ant-design/icons';
-import {Button, Drawer, message, Tag} from 'antd';
-import React, {useRef, useState} from 'react';
-import {PageContainer} from '@ant-design/pro-layout';
-import type {ActionType, ProColumns} from '@ant-design/pro-table';
+import { PlusOutlined } from '@ant-design/icons';
+import {Button, message, Drawer, Tag} from 'antd';
+import React, { useState, useRef } from 'react';
+import { PageContainer } from '@ant-design/pro-layout';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import type {ProDescriptionsItemProps} from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import AddEditForm from './AddEditForm';
-import type {TableListItem} from './data.d';
-import {getList} from './service';
-
+import type { TableListItem } from './data.d';
+import { getList } from './service';
 /**
  *  删除节点
  * @param selectedRows
@@ -33,29 +30,30 @@ const handleRemove = async (selectedRows: TableListItem[]) => {
   }
 };
 
-const TableList: React.FC = () => {
+const Role: React.FC = () => {
   /**
    * 分布更新窗口的弹窗
    */
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
-  const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<TableListItem>();
   const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+  /**
+   * 国际化配置
+   */
 
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '登录名',
+      title: '标识',
+      dataIndex: 'slug',
+      valueType: 'text'
+    },{
+      title: '名称',
       dataIndex: 'name',
       valueType: 'text'
     },{
-      title: '昵称',
-      dataIndex: 'user_name',
-      valueType: 'text'
-    },
-    {
-      title: '角色',
-      dataIndex: 'roles',
+      title: '权限',
+      dataIndex: 'permissions',
       renderText: (text) => {
         return (
           <>
@@ -65,17 +63,6 @@ const TableList: React.FC = () => {
           </>
         );
       }
-    },
-    {
-      title: '是否禁用',
-      dataIndex: 'status',
-      filters: true,
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: {
-        0: { text: '否', status: 'Success' },
-        1: { text: '是', status: 'Error' }
-      },
     },
     {
       title: '创建时间',
@@ -103,7 +90,7 @@ const TableList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<TableListItem>
-        headerTitle={'管理员列表'}
+        headerTitle={'角色列表'}
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -151,32 +138,8 @@ const TableList: React.FC = () => {
         updateModalVisible={updateModalVisible}
         id={(currentRow && currentRow.id) || undefined}
       />
-
-      <Drawer
-        width={600}
-        visible={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-        closable={false}
-      >
-        {currentRow?.name && (
-          <ProDescriptions<TableListItem>
-            column={2}
-            title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<TableListItem>[]}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };
 
-export default TableList;
+export default Role;

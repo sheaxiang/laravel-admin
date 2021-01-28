@@ -143,6 +143,10 @@ const errorHandler = (error: ResponseError) => {
         });
         break;
       }
+      case 403: {
+        history.push('/403');
+        break;
+      }
       default: {
         const errorText = codeMessage[response.status];
 

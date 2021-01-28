@@ -9,7 +9,7 @@ Route::group([
     $router->prefix('admin')->group(function ($api) {
         $api->post('/login', 'AuthController@login');
 
-        $api->group(['middleware' => ['auth:admin']], function ($authApi) {
+        $api->group(['middleware' => ['auth:admin', 'admin']], function ($authApi) {
             $authApi->get('/user', 'AuthController@user');
             $authApi->put('/user', 'AuthController@update');
             $authApi->put('/updatePassword', 'AuthController@updatePassword');
@@ -23,6 +23,8 @@ Route::group([
             });
 
             $authApi->resource('admin_user', 'AdminUserController');
+            $authApi->resource('permission', 'PermissionController');
+            $authApi->resource('role', 'RoleController');
         });
     });
 });

@@ -39,12 +39,58 @@ class CreateAdminTables extends Migration
             $table->boolean('is_hide')->default(0)->comment('是否隐藏:1:隐藏,0:不隐藏');
             $table->string('icon')->comment('图标')->nullable();
             $table->string('path')->comment('路径');
+            $table->string('permission')->comment('权限')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('order', 'order_index');
             $table->index('is_hide', 'is_hide_index');
             $table->index(['_lft', '_rgt', 'parent_id'], '_lft_rgt_parent_id_index');
+        });
+
+        Schema::create('admin_roles', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50)->unique();
+            $table->string('slug', 50)->comment('标识')->unique();
+            $table->timestamps();
+        });
+
+        Schema::create('admin_permissions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50)->unique();
+            $table->string('slug', 50)->comment('标识')->unique();
+            $table->string('http_method')->nullable();
+            $table->text('http_path')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('admin_role_users', function (Blueprint $table) {
+            $table->integer('role_id');
+            $table->integer('user_id');
+            $table->index(['role_id', 'user_id']);
+        });
+
+        Schema::create('admin_role_permissions', function (Blueprint $table) {
+            $table->integer('role_id');
+            $table->integer('permission_id');
+            $table->index(['role_id', 'permission_id']);
+        });
+
+        Schema::create('admin_user_permissions', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('permission_id');
+            $table->index(['user_id', 'permission_id']);
+        });
+
+        Schema::create('admin_operation_logs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('path');
+            $table->string('method', 10);
+            $table->string('ip');
+            $table->text('input');
+            $table->index('user_id');
+            $table->timestamps();
         });
     }
 
@@ -55,7 +101,13 @@ class CreateAdminTables extends Migration
      */
     public function down()
     {
-        Schema::drop('admin_uses');
-        Schema::drop('menus');
+        Schema::dropIfExists('admin_uses');
+        Schema::dropIfExists('menus');
+        Schema::dropIfExists('admin_roles');
+        Schema::dropIfExists('admin_permissions');
+        Schema::dropIfExists('admin_role_users');
+        Schema::dropIfExists('admin_role_permissions');
+        Schema::dropIfExists('admin_user_permissions');
+        Schema::dropIfExists('admin_operation_logs');
     }
 }

@@ -65,19 +65,23 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   }
 
   const formRef = useRef<FormInstance>(null!);
-  const {id} = props;
+  const {id, updateModalVisible} = props;
   const iconList = useMemo(() => formatIcon, []);
 
   useEffect(() => {
+    if (!formRef) return;
+
     if (id) {
       getInfo(id).then((res: TableListItem) => {
         formRef.current.setFieldsValue(res);
       })
+    } else {
+      formRef.current.resetFields();
     }
     getList().then(res => {
       setTreeData(formatTree(res));
     })
-  }, [id]);
+  }, [updateModalVisible]); // todo 自己维护状态
 
   const onSubmit = async (value) => {
     if (id) {
@@ -128,7 +132,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
 
       <ProForm.Group>
         <ProFormDigit label="排序" name="order" width="sm" initialValue={1} min={1} />
-        <ProFormSwitch name="is_hide" label="是否隐藏" initialValue={false} />
+        {/*这里不使用bool的原因是在列表后端返回也是bool,导致无法显示和筛选*/}
+        <ProFormSwitch name="is_hide" label="是否隐藏" initialValue={0} />
         <ProFormSelect
           showSearch
           name="icon"

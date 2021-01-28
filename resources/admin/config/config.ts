@@ -45,5 +45,8 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-  publicPath: '/backend/'
+  publicPath: '/backend/',
+  define: {
+    REACT_APP_ENV: REACT_APP_ENV || false,
+  }
 });

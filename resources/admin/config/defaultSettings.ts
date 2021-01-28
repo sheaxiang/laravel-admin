@@ -1,4 +1,5 @@
 import { Settings as LayoutSettings } from '@ant-design/pro-layout';
+const { REACT_APP_ENV } = process.env;
 
 const Settings: LayoutSettings & {
   pwa?: boolean;
@@ -16,7 +17,7 @@ const Settings: LayoutSettings & {
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
-  host: 'http://reactadmin.test',
+  host: REACT_APP_ENV === 'dev'? 'http://reactadmin.test' : '', //todo
   menu: {
     locale: false
   }

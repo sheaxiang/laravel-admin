@@ -2,6 +2,7 @@
 
 namespace SheaXiang\Admin\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class AdminUser extends Authenticatable implements JWTSubject
 {
-	use Notifiable, SoftDeletes;
+	use Notifiable, SoftDeletes, HasPermissions;
 
 	protected $guard_name = 'admin';
 
@@ -45,4 +46,14 @@ class AdminUser extends Authenticatable implements JWTSubject
 	{
 		return [];
 	}
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'admin_role_users', 'user_id', 'role_id');
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'admin_user_permissions', 'user_id', 'permission_id');
+    }
 }

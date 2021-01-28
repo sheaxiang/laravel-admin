@@ -2,6 +2,7 @@
 
 namespace SheaXiang\Admin\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use SheaXiang\Admin\Http\Requests\AuthLogin;
 use SheaXiang\Admin\Http\Requests\UpdateAdminUserMy;
@@ -26,6 +27,10 @@ class AuthController extends  BaseController
 
         if (!$admin || (!Hash::check($password,$admin->password))) {
             return failed('用户名或者密码错误');
+        }
+
+        if ($admin->status == 1) {
+            return failed('此账户被禁用');
         }
 
         if (!$token = auth('admin')->fromUser($admin)) {
@@ -69,13 +74,9 @@ class AuthController extends  BaseController
 
         return succeed(array_merge(
             $info->toArray(),
-            ['menus' => $menuRepository->index()]
+            ['menus' => $menuRepository->index()],
+            ['permissions' => $info->allPermissions()]
         ));
-
-        return succeed(array_merge(
-            ['permissions' => $info->getPermissionsViaRoles()],
-            ['menus' => Menu::whereNotNull('path')->orderBy('order', 'desc')->get()->toTree()],
-            $info->toArray()));
     }
 
     /**

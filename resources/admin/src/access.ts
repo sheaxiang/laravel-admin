@@ -2,7 +2,9 @@
 export default function access(initialState: { currentUser?: API.CurrentUser | undefined }) {
   const { currentUser } = initialState || {};
   return {
-    canAdmin: currentUser && currentUser.id === 1,
-    // canAdmin: currentUser && currentUser.access === 'admin',
+    can: (route) => {
+      console.log(route)
+      return currentUser && currentUser.id === 1;
+    },
   };
 }

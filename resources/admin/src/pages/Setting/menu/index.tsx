@@ -67,8 +67,8 @@ const TableList: React.FC = () => {
       onFilter: true,
       valueType: 'select',
       valueEnum: {
-        0: { text: '否', status: 'Default' },
-        1: { text: '是', status: 'Default' }
+        0: '否',
+        1: '是'
       },
     },
     {
