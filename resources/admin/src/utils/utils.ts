@@ -18,3 +18,12 @@ export const isAntDesignProOrDev = (): boolean => {
   }
   return isAntDesignPro();
 };
+
+export const undefinedToString = (values: {}) => {
+  let temp = {};
+  Object.entries(values).forEach(([k, v]) => {
+    temp[k] = (v === null || v === undefined) ? '' : v;
+  })
+
+  return temp;
+}

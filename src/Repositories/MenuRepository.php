@@ -7,7 +7,7 @@ class MenuRepository
 {
     public function index()
     {
-        $query = Menu::orderByDesc('order');
+        $query = Menu::with('permission')->orderByDesc('order');
 
         if ($isHide = request('is_hide')) {
             $query->where('is_hide', $isHide);

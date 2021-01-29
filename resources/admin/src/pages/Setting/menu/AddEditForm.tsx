@@ -6,21 +6,22 @@ import ProForm, {
   ProFormSwitch,
   ProFormSelect,
 } from '@ant-design/pro-form';
-import { TreeSelect, Form } from 'antd';
+import { TreeSelect, Form, Row, Col } from 'antd';
 import * as Icon from '@ant-design/icons';
-import {getInfo, create, update, getList} from './service';
+import {getInfo, create, update} from './service';
+import {getList as getPermissionList} from '../../Auth/Permission/service';
 import type { TableListItem } from './data.d';
 import {FormInstance} from "antd/es/form";
+import {undefinedToString} from "@/utils/utils";
 export type UpdateFormProps = {
   onSubmit: () => Promise<void>;
   updateModalVisible: boolean;
-  handleModalVisible: boolean;
+  handleModalVisible: () => Promise<void>;
   id: number;
+  data: []
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
-  const [treeData, setTreeData] = useState([]);
-
   const formatIcon = () => {
     const iconBC = (name: string) => {
       const dynamicIcon = React.createElement(Icon[name]);
@@ -65,7 +66,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   }
 
   const formRef = useRef<FormInstance>(null!);
-  const {id, updateModalVisible} = props;
+  const {id} = props;
   const iconList = useMemo(() => formatIcon, []);
 
   useEffect(() => {
@@ -75,22 +76,45 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       getInfo(id).then((res: TableListItem) => {
         formRef.current.setFieldsValue(res);
       })
-    } else {
-      formRef.current.resetFields();
     }
-    getList().then(res => {
-      setTreeData(formatTree(res));
-    })
-  }, [updateModalVisible]); // todo 自己维护状态
 
-  const onSubmit = async (value) => {
-    if (id) {
-      await update(id, value);
-    } else {
-      await create(value);
+  }, [id]); // todo 自己维护状态
+
+  const requestPermissionList = async () => {
+    const res = await getPermissionList();
+
+    let permissions = [];
+    res.forEach(v => {
+      permissions.push({
+        label: v.name,
+        value: v.id,
+      });
+    })
+
+    return permissions;
+  }
+
+  const onSubmit = async () => {
+    const values = undefinedToString(formRef.current.getFieldsValue());
+
+    try {
+      if (id) {
+        await update(id, values);
+      } else {
+        await create(values);
+      }
+    } catch (e) {
+      return false;
     }
 
     await props.onSubmit();
+  }
+
+  const handleModalVisible = async (visible) => {
+    if (visible === false) {
+      formRef.current.resetFields();
+    }
+    return props.handleModalVisible();
   }
 
   return (
@@ -98,21 +122,38 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={props.handleModalVisible}
+      onVisibleChange={handleModalVisible}
       onFinish={onSubmit}
     >
-      <Form.Item
-        label="上级"
-        name="parent_id"
-      >
-        <TreeSelect
-          style={{ width: '100%' }}
-          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          treeData={treeData}
-          placeholder="请选择上级"
-          treeDefaultExpandAll
-        />
-      </Form.Item>
+      <Row gutter={24}>
+          <Col span={12}>
+            <Form.Item
+              label="上级"
+              name="parent_id"
+            >
+              <TreeSelect
+                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                treeData={formatTree(props.data)}
+                allowClear
+                defaultValue={''}
+                placeholder="请选择上级"
+                treeDefaultExpandAll
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <ProFormSelect
+              name="permission_id"
+              style={{ width: '50%' }}
+              label="权限"
+              valueType="select"
+              request={requestPermissionList}
+              allowClear
+              placeholder="请选择权限"
+            />
+          </Col>
+      </Row>
 
       <ProForm.Group>
         <ProFormText name="name" label="名称" width="md" rules={[

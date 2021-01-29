@@ -11,7 +11,7 @@ export async function getInfo(id: number) {
   return request(`/menu/${id}`);
 }
 
-export async function create(params: TableListItem) {
+export async function create(params) {
   return request('/menu', {
     method: 'POST',
     data: params,

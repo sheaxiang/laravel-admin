@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Drawer } from 'antd';
+import {Button, message, Drawer, Tag} from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -40,7 +40,9 @@ const TableList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<TableListItem>();
+  const [expandedKeys, setExpandedKeys] = useState([]);
   const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+  const [data, setData] = useState([]);
   /**
    * 国际化配置
    */
@@ -59,6 +61,19 @@ const TableList: React.FC = () => {
       title: '路径',
       dataIndex: 'path',
       valueType: 'text',
+    },
+    {
+      title: '权限',
+      dataIndex: 'permission',
+      renderText: (text) => {
+        return (
+          <>
+            {
+              text && <Tag color="green" key={text.id}>{text.name}</Tag>
+            }
+          </>
+        );
+      }
     },
     {
       title: '是否隐藏',
@@ -95,9 +110,7 @@ const TableList: React.FC = () => {
         actionRef={actionRef}
         rowKey="id"
         pagination={false}
-        expandable={{
-          defaultExpandAllRows: true,
-        }}
+        expandable={{expandedRowKeys: expandedKeys}}
         search={{
           labelWidth: 120,
         }}
@@ -126,6 +139,11 @@ const TableList: React.FC = () => {
             return data;
           }
           const data = await getList(params);
+          // 展开一层
+          setExpandedKeys(data.map(v => v.id))
+
+          setData(data);
+
           return {
             data: formatTree(data),
             success: true
@@ -153,6 +171,7 @@ const TableList: React.FC = () => {
         }}
         updateModalVisible={updateModalVisible}
         id={(currentRow && currentRow.id) || undefined}
+        data={data}
       />
 
       <Drawer

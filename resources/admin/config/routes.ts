@@ -34,8 +34,7 @@ export default [
         routes: [
           {
             path: 'menu',
-            component: './Setting/menu',
-            access: 'can'
+            component: './Setting/menu'
           },
         ],
       },
@@ -44,18 +43,15 @@ export default [
         routes: [
           {
             path: 'adminUser',
-            component: './Auth/AdminUser',
-            access: 'can'
+            component: './Auth/AdminUser'
           },
           {
             path: 'permission',
-            component: './Auth/Permission',
-            access: 'can'
+            component: './Auth/Permission'
           },
           {
             path: 'role',
-            component: './Auth/Role',
-            access: 'can'
+            component: './Auth/Role'
           },
         ],
       },

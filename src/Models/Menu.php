@@ -18,6 +18,7 @@ class Menu extends Model
 		'is_hide',
 		'icon',
 		'path',
+        'permission_id'
 	];
 
     protected $appends = [
@@ -27,5 +28,10 @@ class Menu extends Model
     public function getHideInMenuAttribute()
     {
         return (boolean) $this->is_hide;
+    }
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
     }
 }

@@ -3,7 +3,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser | u
   const { currentUser } = initialState || {};
   return {
     can: (route) => {
-      console.log(route)
       return currentUser && currentUser.id === 1;
     },
   };

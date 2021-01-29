@@ -16,12 +16,38 @@ const IconMap = (icon: string) => {
   return React.createElement(Icon[icon] || React.Fragment, null);
 };
 
-const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
-  menus.map(({ icon, children, ...item }) => ({
-    ...item,
-    icon: icon && IconMap(icon),
-    children: children && loopMenuItem(children),
-}));
+const loopMenuItem = (menus: MenuDataItem[], permissions?: [] | boolean): MenuDataItem[] =>
+  menus.map(({ icon, children, permission_id, ...item }) => {
+    if (permissions && permission_id) {
+      if (permissions.indexOf(permission_id) === -1) {
+        return undefined;
+      }
+    }
+    return {
+      ...item,
+      icon: icon && IconMap(typeof icon === "string" ? icon : ''),
+      children: children && loopMenuItem(children, permissions),
+    }
+});
+
+const formatMenu = (menus: [] | undefined) => {
+  return menus?.filter((item) => {
+    if (!item) return ;
+
+    const {children} = item;
+    let count = 0;
+    children?.forEach(v => {
+      if (v === undefined) {
+        count += 1;
+      }
+    })
+    if (children.length === count) {
+      return false
+    }
+
+    return formatMenu(children);
+  })
+}
 
 /**
  * 获取用户信息比较慢的时候会展示一个 loading
@@ -47,12 +73,6 @@ export async function getInitialState(): Promise<{
     return undefined;
   };
 
-  const formatMenu = (menus: array | undefined) => {
-    const formatMenus = menus || [];
-    // 累加路由
-    return defaultMenuData.concat(formatMenus);
-  }
-
   let currentUser: API.CurrentUser = {};
   let menuData: array | undefined = [];
   // 如果是登录页面，不执行
@@ -63,7 +83,6 @@ export async function getInitialState(): Promise<{
 
   return {
     fetchUserInfo,
-    formatMenu,
     menuData,
     currentUser,
     settings: defaultSettings
@@ -84,10 +103,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       }
     },
     menuDataRender: (menuData) => {
-      const dynamicMenus = initialState.menuData && loopMenuItem(initialState.menuData);
+      const permissions = initialState?.currentUser?.permissions?.map(v => v.id);
+      const dynamicMenus = initialState.menuData && loopMenuItem(initialState.menuData, initialState?.currentUser?.id != 1 && permissions);
 
       if (dynamicMenus) {
-        menuData.push(...dynamicMenus);
+        menuData.push(...formatMenu(dynamicMenus));
       }
 
       return menuData;
