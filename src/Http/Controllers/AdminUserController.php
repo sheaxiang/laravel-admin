@@ -13,8 +13,8 @@ class AdminUserController extends BaseController
     {
     	$query = AdminUser::with('roles')
             ->orderByDesc('created_at')
-            /*->where('id', '<>', 1)
-            ->where('id', '<>', auth('admin')->id())*/;
+            ->where('id', '<>', 1)
+            ->where('id', '<>', auth('admin')->id());
 
     	if($name = $request->name) {
 			$query->where('name', 'like', "%$name%");

@@ -20,11 +20,6 @@ class InstallCommand extends Command
         $this->call('jwt:secret');
         $this->call('vendor:publish', ['--provider' => "Tymon\JWTAuth\Providers\LaravelServiceProvider"]);
 
-        /**
-         * permission 相关
-         */
-        $this->call('vendor:publish', ['--provider' => "Spatie\Permission\PermissionServiceProvider"]);
-
         //初始化数据库
         $this->initDatabase();
 
