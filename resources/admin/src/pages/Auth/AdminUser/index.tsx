@@ -56,6 +56,7 @@ const TableList: React.FC = () => {
     {
       title: '角色',
       dataIndex: 'roles',
+      hideInSearch: true,
       renderText: (text) => {
         return (
           <>

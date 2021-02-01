@@ -54,6 +54,7 @@ const Role: React.FC = () => {
     },{
       title: '权限',
       dataIndex: 'permissions',
+      hideInSearch: true,
       renderText: (text) => {
         return (
           <>

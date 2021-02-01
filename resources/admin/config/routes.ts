@@ -53,6 +53,10 @@ export default [
             path: 'role',
             component: './Auth/Role'
           },
+          {
+            path: 'log',
+            component: './Auth/Log'
+          },
         ],
       },
       {

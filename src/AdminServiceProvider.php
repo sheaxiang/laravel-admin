@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use SheaXiang\Admin\Commands\InstallCommand;
 use SheaXiang\Admin\Exceptions\Handler;
+use SheaXiang\Admin\Http\Middleware\LogOperation;
 use SheaXiang\Admin\Http\Middleware\Permission;
 
 class AdminServiceProvider extends ServiceProvider
@@ -20,6 +21,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     protected $routeMiddleware = [
         'admin.permission' => Permission::class,
+        'admin.log'        => LogOperation::class,
     ];
 
     /**
@@ -30,6 +32,7 @@ class AdminServiceProvider extends ServiceProvider
     protected $middlewareGroups = [
         'admin' => [
             'admin.permission',
+            'admin.log',
         ],
     ];
 

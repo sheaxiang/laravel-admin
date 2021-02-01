@@ -6,7 +6,7 @@ Route::group([
     'prefix'        => 'api',
     'namespace'     => 'SheaXiang\\Admin\\Http\\Controllers',
 ], function (Router $router) {
-    $router->prefix('admin')->group(function ($api) {
+    $router->group(['prefix' => 'admin'], function ($api) {
         $api->post('/login', 'AuthController@login');
 
         $api->group(['middleware' => ['auth:admin', 'admin']], function ($authApi) {
@@ -25,6 +25,8 @@ Route::group([
             $authApi->resource('admin_user', 'AdminUserController');
             $authApi->resource('permission', 'PermissionController');
             $authApi->resource('role', 'RoleController');
+
+            $authApi->get('logs', 'LogOperationController@index');
         });
     });
 });

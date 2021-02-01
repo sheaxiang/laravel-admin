@@ -12,9 +12,9 @@ class AdminUserController extends BaseController
     public function index(Request $request)
     {
     	$query = AdminUser::with('roles')
-            ->orderByDesc('created_at')
-            ->where('id', '<>', 1)
-            ->where('id', '<>', auth('admin')->id());
+            ->orderByDesc('created_at');
+
+    	$pageSize = $request->pageSize;
 
     	if($name = $request->name) {
 			$query->where('name', 'like', "%$name%");
@@ -24,7 +24,12 @@ class AdminUserController extends BaseController
             $query->where('status', $status);
         }
 
-		return succeed($request->pageSize ? $query->paginate((int)$request->pageSize) : $query->get());
+        if ($pageSize) {
+            $query->where('id', '<>', 1)
+                ->where('id', '<>', auth('admin')->id());
+        }
+
+		return succeed($pageSize ? $query->paginate((int)$pageSize) : $query->get());
     }
 
     public function store(StoreAdminUser $request)

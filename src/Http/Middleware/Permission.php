@@ -15,6 +15,7 @@ class Permission
         if ($this->shouldPassThrough($request)) {
             return $next($request);
         }
+
         if (!auth('admin')->user()->allPermissions()->first(function ($permission) use ($request) {
             return $permission->shouldPassThrough($request);
         })) {
@@ -28,6 +29,7 @@ class Permission
     {
         $excepts = array_merge(config('admin.auth.excepts', []), [
             '/user',
+            '/login',
         ]);
 
         return collect($excepts)

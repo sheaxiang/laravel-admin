@@ -135,7 +135,6 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 treeData={formatTree(props.data)}
                 allowClear
-                defaultValue={''}
                 placeholder="请选择上级"
                 treeDefaultExpandAll
               />
