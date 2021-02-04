@@ -10,7 +10,6 @@ import type {ResponseError} from 'umi-request';
 import {queryCurrent} from './services/user';
 import defaultSettings from '../config/defaultSettings';
 import * as Icon from '@ant-design/icons';
-import defaultMenuData from '../config/routes'
 
 const IconMap = (icon: string) => {
   return React.createElement(Icon[icon] || React.Fragment, null);
@@ -74,7 +73,7 @@ export async function getInitialState(): Promise<{
   };
 
   let currentUser: API.CurrentUser = {};
-  let menuData: array | undefined = [];
+  let menuData: MenuDataItem[] | undefined = [];
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     currentUser = await fetchUserInfo();

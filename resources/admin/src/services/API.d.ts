@@ -1,3 +1,5 @@
+import {MenuDataItem} from "@ant-design/pro-layout";
+
 declare namespace API {
   export type CurrentUser = {
     avatar?: string;
@@ -9,7 +11,7 @@ declare namespace API {
     access?: 'user' | 'guest' | 'admin';
     unreadCount?: number;
 
-    menus?: array
+    menus?: MenuDataItem[]
   };
 
   export type LoginStateType = {
