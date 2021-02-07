@@ -5,10 +5,11 @@
  * For details, please see
  * https://pro.ant.design/docs/deploy
  */
+import defaultSettings from "./defaultSettings";
 export default {
   dev: {
     '/api/': {
-      target: 'http://reactadmin.test',
+      target: defaultSettings.host,
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

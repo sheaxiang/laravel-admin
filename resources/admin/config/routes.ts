@@ -30,42 +30,33 @@ export default [
         component: './Dashboard',
       },
       {
-        path: '/setting',
-        routes: [
-          {
-            path: 'menu',
-            component: './Setting/menu'
-          },
-        ],
-      },
-      {
         path: '/auth',
         routes: [
           {
             path: 'adminUser',
-            component: './Auth/AdminUser'
+            component: './Auth/AdminUser',
           },
           {
             path: 'permission',
-            component: './Auth/Permission'
+            component: './Auth/Permission',
           },
           {
             path: 'role',
-            component: './Auth/Role'
+            component: './Auth/Role',
           },
           {
             path: 'log',
-            component: './Auth/Log'
+            component: './Auth/Log',
+          },
+          {
+            path: 'menu',
+            component: './Auth/Menu',
           },
         ],
       },
       {
         path: '/',
         redirect: '/dashboard',
-      },
-      {
-        path: '/setting',
-        redirect: '/setting/menu',
       },
       {
         path: '/auth',
