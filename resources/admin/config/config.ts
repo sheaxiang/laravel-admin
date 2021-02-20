@@ -45,5 +45,5 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-  publicPath: '/backend/',
+  publicPath: '/admin/',
 });
