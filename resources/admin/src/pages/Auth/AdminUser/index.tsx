@@ -145,8 +145,8 @@ const TableList: React.FC = () => {
             actionRef.current.reload();
           }
         }}
-        handleModalVisible={() => {
-          handleUpdateModalVisible(false);
+        handleModalVisible={(visible) => {
+          handleUpdateModalVisible(visible);
           setCurrentRow(undefined);
         }}
         updateModalVisible={updateModalVisible}

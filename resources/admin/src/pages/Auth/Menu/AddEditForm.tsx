@@ -66,7 +66,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   }
 
   const formRef = useRef<FormInstance>(null!);
-  const {id} = props;
+  const {id, updateModalVisible} = props;
   const iconList = useMemo(() => formatIcon, []);
 
   useEffect(() => {
@@ -76,9 +76,11 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       getInfo(id).then((res: TableListItem) => {
         formRef.current.setFieldsValue(res);
       })
+    } else {
+      formRef.current.resetFields();
     }
 
-  }, [id]); // todo 自己维护状态
+  }, [updateModalVisible]); // todo 自己维护状态
 
   const requestPermissionList = async () => {
     const res = await getPermissionList();
@@ -110,19 +112,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     await props.onSubmit();
   }
 
-  const handleModalVisible = async (visible) => {
-    if (visible === false) {
-      formRef.current.resetFields();
-    }
-    return props.handleModalVisible();
-  }
-
   return (
     <ModalForm
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={handleModalVisible}
+      onVisibleChange={props.handleModalVisible}
       onFinish={onSubmit}
     >
       <Row gutter={24}>
