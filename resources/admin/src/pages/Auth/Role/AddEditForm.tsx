@@ -51,11 +51,15 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       return false;
     }
 
-    await props.onSubmit();
+    return await props.onSubmit();
   }
 
   const onChange = (targetKeys) => {
     setTargetKeys(targetKeys);
+  }
+
+  const handleModalVisible = (visible) => {
+    return visible && props.handleModalVisible;
   }
 
   return (
@@ -63,7 +67,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={props.handleModalVisible}
+      onVisibleChange={handleModalVisible}
       onFinish={onSubmit}
     >
       <ProForm.Group>

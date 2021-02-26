@@ -109,7 +109,11 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       return false;
     }
 
-    await props.onSubmit();
+    return await props.onSubmit();
+  }
+
+  const handleModalVisible = (visible) => {
+    return visible && props.handleModalVisible;
   }
 
   return (
@@ -117,7 +121,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={props.handleModalVisible}
+      onVisibleChange={handleModalVisible}
       onFinish={onSubmit}
     >
       <Row gutter={24}>
@@ -167,7 +171,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
 
       <ProForm.Group>
         <ProFormDigit label="排序" name="order" width="sm" initialValue={1} min={1} />
-        {/*这里不使用bool的原因是在列表后端返回也是bool,导致无法显示和筛选*/}
+        {/* 这里不使用bool的原因是在列表后端返回也是bool,导致无法显示和筛选 */}
         <ProFormSwitch name="is_hide" label="是否隐藏" initialValue={0} />
         <ProFormSelect
           showSearch

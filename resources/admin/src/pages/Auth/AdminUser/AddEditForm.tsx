@@ -9,11 +9,12 @@ import {getInfo, create, update} from './service';
 import {getList as getRoleList} from '../Role/service';
 import {getList as getPermissionList} from '../Permission/service';
 import type { TableListItem } from './data.d';
-import {FormInstance} from "antd/es/form";
+import type {FormInstance} from "antd/es/form";
 import {Form, Upload} from "antd";
 import {PlusOutlined} from '@ant-design/icons';
 import {image} from "@/services/upload";
 import {useModel} from "@@/plugin-model/useModel";
+
 export type UpdateFormProps = {
   onSubmit: () => Promise<void>;
   updateModalVisible: boolean;
@@ -35,13 +36,13 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       getInfo(id).then((res: TableListItem) => {
         formRef.current.setFieldsValue({...res, roles: res?.roles.map(v => v.id), permissions: res?.permissions.map(v => v.id)});
 
-        //页面显示
+        // 页面显示
         setImageUrl(settings.host + res.avatar);
       })
     } else {
       formRef.current.resetFields();
 
-      //页面显示
+      // 页面显示
       setImageUrl('');
     }
 
@@ -58,7 +59,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       return false;
     }
 
-    await props.onSubmit();
+    return await props.onSubmit();
   }
 
   const uploadButton = (
@@ -71,7 +72,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const requestRolesList = async () => {
     const res = await getRoleList();
 
-    let roles = [];
+    const roles = [];
     res.forEach(v => {
       roles.push({
         label: v.name,
@@ -85,7 +86,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
   const requestPermissionsList = async () => {
     const res = await getPermissionList();
 
-    let permissions = [];
+    const permissions = [];
     res.forEach(v => {
       permissions.push({
         label: v.name,
@@ -98,11 +99,15 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
 
   const uploadAvatar = async ({file}) => {
     const {url} = await image('avatar', file)
-    //form赋值
+    // form赋值
     formRef.current.setFieldsValue({avatar: url});
 
-    //页面显示
+    // 页面显示
     setImageUrl(settings.host + url);
+  }
+
+  const handleModalVisible = (visible) => {
+    return visible && props.handleModalVisible;
   }
 
   return (
@@ -110,7 +115,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={props.handleModalVisible}
+      onVisibleChange={handleModalVisible}
       onFinish={onSubmit}
     >
 

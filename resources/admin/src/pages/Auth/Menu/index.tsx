@@ -103,6 +103,7 @@ const Menu: React.FC = () => {
       ],
     },
   ];
+
   return (
     <PageContainer>
       <ProTable<TableListItem>
@@ -165,8 +166,8 @@ const Menu: React.FC = () => {
             actionRef.current.reload();
           }
         }}
-        handleModalVisible={(visible) => {
-          handleUpdateModalVisible(visible);
+        handleModalVisible={() => {
+          handleUpdateModalVisible(false);
           setCurrentRow(undefined);
         }}
         updateModalVisible={updateModalVisible}
