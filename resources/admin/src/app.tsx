@@ -29,6 +29,7 @@ const loopMenuItem = (menus: MenuDataItem[], permissions?: [] | boolean): MenuDa
     }
 });
 
+// 去除无children
 const formatMenu = (menus: [] | undefined) => {
   return menus?.filter((item) => {
     if (!item) return ;
@@ -40,7 +41,7 @@ const formatMenu = (menus: [] | undefined) => {
         count += 1;
       }
     })
-    if (children.length === count) {
+    if (children.length === count && children.length !== 0) { //如果只有一层,则不需要去除
       return false
     }
 
