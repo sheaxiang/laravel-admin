@@ -166,9 +166,9 @@ const Menu: React.FC = () => {
             actionRef.current.reload();
           }
         }}
-        handleModalVisible={() => {
-          handleUpdateModalVisible(false);
-          setCurrentRow(undefined);
+        handleModalVisible={(visible) => {
+          handleUpdateModalVisible(visible);
+          return visible && setCurrentRow(undefined);
         }}
         updateModalVisible={updateModalVisible}
         id={(currentRow && currentRow.id) || undefined}

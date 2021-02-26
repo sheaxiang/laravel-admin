@@ -58,16 +58,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     setTargetKeys(targetKeys);
   }
 
-  const handleModalVisible = (visible) => {
-    return visible && props.handleModalVisible;
-  }
-
   return (
     <ModalForm
       formRef={formRef}
       title={id ? '编辑' : '新建'}
       visible={props.updateModalVisible}
-      onVisibleChange={handleModalVisible}
+      onVisibleChange={props.handleModalVisible}
       onFinish={onSubmit}
     >
       <ProForm.Group>
