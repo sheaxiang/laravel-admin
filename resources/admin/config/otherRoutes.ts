@@ -54,6 +54,9 @@ export default [
     path: '/auth',
     redirect: '/auth/adminUser',
   },
+
+  //在这里添加路由
+
   {
     path: '/403',
     component: './403',
