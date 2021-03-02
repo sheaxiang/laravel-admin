@@ -90,19 +90,17 @@ class AdminServiceProvider extends ServiceProvider
             __DIR__.'/../resources/admin' => base_path('admin'),
         ], 'laravel-admin-resources');
 
-        // 更新扩展包时需要更新的
-        $this->addPublishGroup('laravel-admin-resources-force', [
-            __DIR__.'/../resources/admin/config/routes.ts' => base_path('admin/config/routes.ts'),
-            __DIR__.'/../resources/admin/dist' => base_path('admin/dist'),
-            __DIR__.'/../resources/admin/public' => base_path('admin/public'),
-            __DIR__.'/../resources/admin/src' => base_path('admin/src'),
-            __DIR__.'/../resources/admin/dist' => public_path('admin'),
-        ]);
-
         //发布前端打包好的代码到admin目录
         $this->publishes([
             __DIR__.'/../resources/admin/dist' => public_path('admin'),
         ], 'laravel-admin-resources-dist');
+
+        // 更新扩展包时需要更新的
+        $this->addPublishGroup('laravel-admin-resources-force', [
+            __DIR__.'/../resources/admin/config/routes.ts' => base_path('admin/config/routes.ts'),
+            __DIR__.'/../resources/admin/public' => base_path('admin/public'),
+            __DIR__.'/../resources/admin/src' => base_path('admin/src'),
+        ]);
 
     }
 
