@@ -55,7 +55,8 @@ const Permission: React.FC = () => {
     },{
       title: '请求方法',
       dataIndex: 'method',
-      valueType: 'option'
+      valueType: 'text',
+      hideInSearch: true
     },{
       title: 'ip',
       dataIndex: 'ip',
