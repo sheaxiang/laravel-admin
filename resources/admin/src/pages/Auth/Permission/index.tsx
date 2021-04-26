@@ -130,7 +130,7 @@ const Permission: React.FC = () => {
         }}
         handleModalVisible={(visible) => {
           handleUpdateModalVisible(visible);
-          return visible && setCurrentRow(undefined);
+          return !visible && setCurrentRow(undefined);
         }}
         updateModalVisible={updateModalVisible}
         id={(currentRow && currentRow.id) || undefined}
