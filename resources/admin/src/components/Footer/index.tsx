@@ -3,7 +3,7 @@ import { DefaultFooter } from '@ant-design/pro-layout';
 
 export default () => (
   <DefaultFooter
-    copyright="2020 sheaxiang"
+    copyright={ (new Date()).getFullYear() + " sheaxiang"}
     links={[
       {
         key: 'xiangxingyu',
