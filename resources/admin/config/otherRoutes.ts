@@ -1,17 +1,17 @@
 export default [
   {
-    path: '/user',
+    path: '/adminUser',
     routes: [
       {
         layout: false,
         name: '登录',
         path: 'login',
-        component: './User/login',
+        component: './AdminUser/login',
       },
       {
         name: '个人设置',
         path: 'settings',
-        component: './User/AccountSettings',
+        component: './AdminUser/AccountSettings',
       },
     ],
   },

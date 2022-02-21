@@ -67,7 +67,7 @@ export async function getInitialState(): Promise<{
     try {
       return await queryCurrent();
     } catch (error) {
-      history.push('/user/login');
+      history.push('/adminUser/login');
     }
 
     return undefined;
@@ -76,7 +76,7 @@ export async function getInitialState(): Promise<{
   let currentUser: API.CurrentUser = {};
   let menuData: MenuDataItem[] | undefined = [];
   // 如果是登录页面，不执行
-  if (history.location.pathname !== '/user/login') {
+  if (history.location.pathname !== '/adminUser/login') {
     currentUser = await fetchUserInfo();
     menuData = currentUser?.menus;
   }
@@ -98,8 +98,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       const { location } = history;
 
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== '/user/login') {
-        history.push('/user/login');
+      if (!initialState?.currentUser && location.pathname !== '/adminUser/login') {
+        history.push('/adminUser/login');
       }
     },
     menuDataRender: (menuData) => {
@@ -154,7 +154,7 @@ const errorHandler = (error: ResponseError) => {
         notification.error({
           message: '登录过期,请重新登录!'
         });
-        history.push('/user/login');
+        history.push('/adminUser/login');
         break;
       }
       case 400: {

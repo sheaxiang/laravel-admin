@@ -24,9 +24,9 @@ const loginOut = async () => {
   const { query, pathname } = history.location;
   const { redirect } = query;
   // Note: There may be security issues, please note
-  if (window.location.pathname !== '/user/login' && !redirect) {
+  if (window.location.pathname !== '/adminUser/login' && !redirect) {
     history.replace({
-      pathname: '/user/login',
+      pathname: '/adminUser/login',
       search: stringify({
         redirect: pathname,
       }),
@@ -49,7 +49,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
         loginOut();
         return;
       }
-      history.push(`/user/${key}`);
+      history.push(`/adminUser/${key}`);
     },
     [initialState, setInitialState],
   );

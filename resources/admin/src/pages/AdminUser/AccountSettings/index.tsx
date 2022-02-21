@@ -8,7 +8,7 @@ import styles from './style.less';
 
 const { Item } = Menu;
 
-const UserSetting = React.FC = () => {
+const AdminUserSetting = React.FC = () => {
   const [selectKey, setSelectKey] = useState('base')
   const [main, setMain] = useState<HTMLDivElement | undefined>(undefined)
   const [mode, setMode] = useState('inline')
@@ -94,4 +94,4 @@ const UserSetting = React.FC = () => {
   );
 }
 
-export default UserSetting;
+export default AdminUserSetting;
