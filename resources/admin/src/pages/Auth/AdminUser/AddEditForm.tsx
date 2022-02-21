@@ -40,7 +40,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         setImageUrl(settings.host + res.avatar);
       })
     } else {
-      formRef.current.resetFields();
+      formRef.current?.resetFields();
 
       // 页面显示
       setImageUrl('');
@@ -181,6 +181,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       </ProForm.Group>
     </ModalForm>
   );
+
 };
 
 export default UpdateForm;
